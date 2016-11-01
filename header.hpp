@@ -14,53 +14,56 @@ using namespace std;
 #define BETWEEN(x,a,b)			(((x)>=(a)) && ((x)<(b)))
 #define SWAP(a,b)				int _temp_=(a);(a)=(b);(b)=_temp_;
 #define RAND(max)				(rand()%(max))
-#define RAND2(min,max)			(min)+(rand()%((max)-(min)))
+#define RAND2(min,max)			((min)+(rand()%((max)-(min))))
 
-#define GENES_POR_GER 10
-#define VALS_POR_GENE 6
-#define MUTS_POR_GER 2
+#define CELLS_PER_GEN 30
+#define VALS_PER_CELL 20
+#define CHANCE_TO_MUTATE1 1
+#define CHANCE_TO_MUTATE2 60
 
-const int def_vals[VALS_POR_GENE][2] = {{-1000,1000},{-1000,1000},{-1000,1000},{-1000,1000},{0,1},{0,1}};
+const int def_vals[VALS_PER_CELL][2] = {
+	{0,400},{0,400},{0,400},{0,400},{0,400},
+	{0,400},{0,400},{0,400},{0,400},{0,400},
+	{0,400},{0,400},{0,400},{0,400},{0,400},
+	{0,400},{0,400},{0,400},{0,400},{0,400}
+};
 
-struct genes{
-	int vals[VALS_POR_GENE];
-	long long int result;
-	genes(int v[VALS_POR_GENE]){
-		FOR(i,VALS_POR_GENE){
-			vals[i]=v[i];
-		}
-	}
-	genes(){
+struct cell{
+	vector<int> vals;
+	long long int fitness;
+	cell(vector<int> v):vals{v}{}
+	cell(){
 		initRAND();
 	}
-	void randomize(genes a,genes b){
-		FOR(i,VALS_POR_GENE){
+	void mix(cell a,cell b){
+		FOR(i,VALS_PER_CELL){
 			if(RAND(2))	vals[i]=a.vals[i];
-			else			vals[i]=b.vals[i];
+			else		vals[i]=b.vals[i];
 		}
-		set<int> muts;
-		while(muts.size()<MUTS_POR_GER)muts.insert(RAND(VALS_POR_GENE));
-		for(auto i:muts){
-			vals[i]=RAND2(def_vals[i][0],def_vals[i][1]);
+	}
+	void mutate(){
+		FOR(i,VALS_PER_CELL){
+			if(RAND(CHANCE_TO_MUTATE1)<CHANCE_TO_MUTATE2)vals[i]=RAND2(def_vals[i][0],def_vals[i][1]);
 		}
 	}
 	void initRAND(){
-		FOR(i,VALS_POR_GENE){
+		vals.resize(VALS_PER_CELL);
+		FOR(i,VALS_PER_CELL){
 			vals[i]=RAND2(def_vals[i][0],def_vals[i][1]);
 		}
 	}
-	bool operator<(const genes &other) const{
-		return result>other.result;
+	bool operator<(const cell &other) const{
+		return fitness<other.fitness;
 	}
 	void print(){
-		FOR(i,VALS_POR_GENE){
+		FOR(i,VALS_PER_CELL){
 			if(i)printf("|");
-			printf("%d",vals[i]);
+			printf("%5d",vals[i]);
 		}
-		printf(" -> %lld\n",result);
+		printf(" -> %lld\n",fitness);
 		fflush(stdout);
 	}
 };
 
-void test(genes&);
+void test(cell&);
 #endif
