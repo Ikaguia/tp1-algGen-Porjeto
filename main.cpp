@@ -1,7 +1,7 @@
 #include "header.hpp"
 
-bool compFunc(const pair<int,int> a,const pair<int,int> b){
-	return a.first>b.first;
+bool compFunc(const ii a,const ii b){
+	return a.ff>b.ff;
 }
 
 int main(){
@@ -11,23 +11,23 @@ int main(){
 	while(1){
 		cont++;
 		//calculate fitness
-		vector<pair<int,int> > results;
+		vector<ii > results;
 		FOR(i,CELLS_PER_GEN){
-			test(cur[i]);
-			results.push_back(pair<int,int>(cur[i].fitness,i));
-			sort(results.begin(), results.end(),compFunc);
+			cur[i].test();
+			results.push_back(ii(cur[i].fitness,i));
+			sort(results.begin(), results.end(),[](const ii a,const ii b){return a.ff>b.ff;});
 			system("clear||cls");
 			printf("Generation %d:\n",cont);
 			for(auto i:results){
-				printf("Cell %2d: ",i.second);
-				cur[i.second].print();
+				printf("Cell %2d: ",i.ss);
+				cur[i.ss].print();
 			}
 			fflush(stdout);
 			usleep(50000);
 		}
 		usleep(500000);
 		sort(cur.begin(), cur.end());
-		prev=cur;
+		prev = cur;
 		//generate new generation based on fitness, better fitness means better chance to mate
 		FOR(i,CELLS_PER_GEN-2){
 			int a,b;

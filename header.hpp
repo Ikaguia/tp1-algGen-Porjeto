@@ -16,16 +16,17 @@ using namespace std;
 #define RAND(max)				(rand()%(max))
 #define RAND2(min,max)			((min)+(rand()%((max)-(min))))
 
+using ii = pair<int,int>;
+#define ff first
+#define ss second
+
 #define CELLS_PER_GEN 30
-#define VALS_PER_CELL 20
+#define VALS_PER_CELL 2
 #define CHANCE_TO_MUTATE1 1
-#define CHANCE_TO_MUTATE2 60
+#define CHANCE_TO_MUTATE2 2
 
 const int def_vals[VALS_PER_CELL][2] = {
-	{0,400},{0,400},{0,400},{0,400},{0,400},
-	{0,400},{0,400},{0,400},{0,400},{0,400},
-	{0,400},{0,400},{0,400},{0,400},{0,400},
-	{0,400},{0,400},{0,400},{0,400},{0,400}
+	{0,360},{0,1000}
 };
 
 struct cell{
@@ -43,7 +44,7 @@ struct cell{
 	}
 	void mutate(){
 		FOR(i,VALS_PER_CELL){
-			if(RAND(CHANCE_TO_MUTATE1)<CHANCE_TO_MUTATE2)vals[i]=RAND2(def_vals[i][0],def_vals[i][1]);
+			if(RAND(CHANCE_TO_MUTATE2)<CHANCE_TO_MUTATE1)vals[i]=RAND2(def_vals[i][0],def_vals[i][1]);
 		}
 	}
 	void initRAND(){
@@ -58,12 +59,11 @@ struct cell{
 	void print(){
 		FOR(i,VALS_PER_CELL){
 			if(i)printf("|");
-			printf("%5d",vals[i]);
+			printf("%4d",vals[i]);
 		}
 		printf(" -> %lld\n",fitness);
 		fflush(stdout);
 	}
+	void test();
 };
-
-void test(cell&);
 #endif
