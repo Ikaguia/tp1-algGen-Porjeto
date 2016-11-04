@@ -22,51 +22,42 @@ using ii = pair<int,int>;
 
 const double pi = acos(-1);
 #define RAD(x) ((x*pi)/180.0)
+#define GRAV 9.807
 
-#define CELLS_PER_GEN 30
+#define CELLS_PER_GEN 300
 #define VALS_PER_CELL 2
-#define CHANCE_TO_MUTATE1 1
-#define CHANCE_TO_MUTATE2 2
+#define CHANCE_TO_MUTATE1 2 // 2/6
+#define CHANCE_TO_MUTATE2 6
 
-const int def_vals[VALS_PER_CELL][2] = {
-	{0,360},{1,101}
+const double def_vals[VALS_PER_CELL][2] = {
+//	{0.0,360.0},{1.0,101.0}
+
+	{0.1,45.01},
+	{0.0,10.01}
+	//{-10.0,10.01},{-10.0,10.01},{-10.0,10.01},{-10.0,10.01}
+	//{  0.0, 0.01},{  0.0, 0.01},{  0.0, 0.01},{  0.0,10.01}
+
+//	{-1000.0,1000.0},{-1000.0,1000.0},{-1000.0,1000.0},{-1000.0,1000.0},
+//	{-1000.0,1000.0},{-1000.0,1000.0},{-1000.0,1000.0},{-1000.0,1000.0}
+
+//	{    0.0,   0.0},{    0.0,   0.0},{   45.0,  45.0},{      0,     0},
+//	{    0.0,   0.0},{    0.0,   0.0},{    0.0,   0.0},{   GRAV,  GRAV}
 };
 
 struct cell{
-	vector<int> vals;
+	vector<double> vals;
 	double fitness;
-	cell(vector<int> v):vals{v}{}
-	cell(){
-		initRAND();
-	}
-	void mix(cell a,cell b){
-		FOR(i,VALS_PER_CELL){
-			if(RAND(2))	vals[i]=a.vals[i];
-			else		vals[i]=b.vals[i];
-		}
-	}
-	void mutate(){
-		FOR(i,VALS_PER_CELL){
-			if(RAND(CHANCE_TO_MUTATE2)<CHANCE_TO_MUTATE1)vals[i]=RAND2(def_vals[i][0],def_vals[i][1]);
-		}
-	}
-	void initRAND(){
-		vals.resize(VALS_PER_CELL);
-		FOR(i,VALS_PER_CELL){
-			vals[i]=RAND2(def_vals[i][0],def_vals[i][1]);
-		}
-	}
-	bool operator<(const cell &other) const{
-		return fitness<other.fitness;
-	}
-	void print(){
-		FOR(i,VALS_PER_CELL){
-			if(i)printf("|");
-			printf("%4d",vals[i]);
-		}
-		printf(" -> %.02lf\n",fitness);
-		fflush(stdout);
-	}
+	cell(vector<double>);
+	cell();
+	void mix(cell,cell);
+	void mutate();
+	void initRAND();
+	bool operator<(const cell&) const;
+	void print();
 	void test();
 };
+
+
+
+double random_double(double,double);
 #endif
