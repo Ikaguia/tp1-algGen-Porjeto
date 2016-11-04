@@ -20,18 +20,21 @@ using ii = pair<int,int>;
 #define ff first
 #define ss second
 
+const double pi = acos(-1);
+#define RAD(x) ((x*pi)/180.0)
+
 #define CELLS_PER_GEN 30
 #define VALS_PER_CELL 2
 #define CHANCE_TO_MUTATE1 1
 #define CHANCE_TO_MUTATE2 2
 
 const int def_vals[VALS_PER_CELL][2] = {
-	{0,360},{0,1000}
+	{0,360},{1,101}
 };
 
 struct cell{
 	vector<int> vals;
-	long long int fitness;
+	double fitness;
 	cell(vector<int> v):vals{v}{}
 	cell(){
 		initRAND();
@@ -61,7 +64,7 @@ struct cell{
 			if(i)printf("|");
 			printf("%4d",vals[i]);
 		}
-		printf(" -> %lld\n",fitness);
+		printf(" -> %.02lf\n",fitness);
 		fflush(stdout);
 	}
 	void test();
